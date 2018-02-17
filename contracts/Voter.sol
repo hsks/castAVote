@@ -5,6 +5,7 @@ contract Voter {
 	mapping(uint => string) idVsName;
 	mapping(uint => uint) votesVsCandidate;
 	uint numberOfCandidate=0;
+	uint totalVotesCast = 0;
 	
 	event test_numberOfCandidate(uint value1);
 	event test_name(string name);
@@ -17,6 +18,7 @@ contract Voter {
 	function voteForCandidate(uint candidateId) public{
 	    votesVsCandidate[candidateId] += 1;
 		voterVsCandidate[msg.sender] = candidateId;
+		totalVotesCast += 1;
 	}
 
 	function addCandidate(string candidateName) public{
@@ -31,5 +33,9 @@ contract Voter {
 	
 	function getVotesForCandidate(uint id) returns(uint) {
 	    return votesVsCandidate[id];
+	}
+
+	function getTotalVotesCast() constant returns(uint) {
+		return totalVotesCast;
 	}
 }

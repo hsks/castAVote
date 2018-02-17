@@ -1,14 +1,24 @@
+import { default as Web3} from 'web3';
+import { default as contract } from 'truffle-contract';
+var VotersArtifact;
+var account;
 window.App = {
   web3Provider: null,
   contracts: {},
-
   init: function() {
+    var self = this;
+    $.getJSON('./build/contracts/Voter.json', function(result) {
+      var votersContract = result;
+      VotersArtifact = contract(votersContract);
+      VotersArtifact.setProvider(web3.currentProvider);
+      self.totalVotesCast();
+    });
     // Load pets.
     $.getJSON('./app/candidates.json', function(data) {
       var candidatesSection = $('#candidates');
       var candidatesRow = $('#candidate_row');
 
-      for (i = 0; i < data.length; i ++) {
+      for (var i = 0; i < data.length; i++) {
         candidatesRow.find('.name').text(data[i].name);
         candidatesRow.find('.id').text(data[i].id);
         candidatesRow.find('#candidateId').attr('id', data[i].id);
@@ -16,7 +26,18 @@ window.App = {
       }
     });
 
-    return App.initWeb3();
+    App.initWeb3();
+
+  },
+
+  fetchAccount: function() {
+    web3.eth.getAccounts(function(error, accounts) {
+      if(error) {
+        console.log(error);
+      }
+
+      account = accounts[0];
+    });
   },
 
   initWeb3: function() {
@@ -28,6 +49,7 @@ window.App = {
   App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
 }
 web3 = new Web3(App.web3Provider);
+App.fetchAccount();
 },
 
 voteForCandidate: function() {
@@ -38,8 +60,8 @@ voteForCandidate: function() {
 
     var account = accounts[0];
 
-    App.contracts.Adoption.deployed().then(function(instance) {
-      votersInstance = instance;
+    VotersArtifact.deployed().then(function(instance) {
+      var votersInstance = instance;
       return votersInstance.voteForCandidate(1, {from: account});
     }).then(function(result) {
       console.log("voted for candidate");
@@ -51,70 +73,16 @@ voteForCandidate: function() {
 
 },
 
-// initContract: function() {
-//   $.getJSON('Voters.json', function(data) {
-//   // Get the necessary contract artifact file and instantiate it with truffle-contract
-//   var VotersArtifact = data;
-//   App.contracts.Voters = TruffleContract(VotersArtifact);
-
-//   // Set the provider for our contract
-//   App.contracts.Voters.setProvider(App.web3Provider);
-
-//   // Use our contract to retrieve and mark the adopted pets
-//   return App.markAdopted();
-// });
-
-//   return App.bindEvents();
-// },
-
-// bindEvents: function() {
-//   $(document).on('click', '.btn-adopt', App.handleAdopt);
-// },
-
-// markAdopted: function(adopters, account) {
-//   var adoptionInstance;
-
-//   App.contracts.Adoption.deployed().then(function(instance) {
-//     adoptionInstance = instance;
-
-//     return adoptionInstance.getAdopters.call();
-//   }).then(function(adopters) {
-//     for (i = 0; i < adopters.length; i++) {
-//       if (adopters[i] !== '0x0000000000000000000000000000000000000000') {
-//         $('.panel-pet').eq(i).find('button').text('Success').attr('disabled', true);
-//       }
-//     }
-//   }).catch(function(err) {
-//     console.log(err.message);
-//   });
-// },
-
-// handleAdopt: function(event) {
-//   event.preventDefault();
-
-//   var petId = parseInt($(event.target).data('id'));
-
-//   var adoptionInstance;
-
-//   web3.eth.getAccounts(function(error, accounts) {
-//     if (error) {
-//       console.log(error);
-//     }
-
-//     var account = accounts[0];
-
-//     App.contracts.Adoption.deployed().then(function(instance) {
-//       adoptionInstance = instance;
-
-//     // Execute adopt as a transaction by sending account
-//     return adoptionInstance.adopt(petId, {from: account});
-//   }).then(function(result) {
-//     return App.markAdopted();
-//   }).catch(function(err) {
-//     console.log(err.message);
-//   });
-// });
-// }
+totalVotesCast: function() {
+  VotersArtifact.deployed().then(function(instance) {
+    var votersInstance = instance;
+    return votersInstance.getTotalVotesCast();
+  }).then(function(result) {
+    $("#totalVotes").text(result.c[0]);
+  }).catch(function(error) {
+    console.log("error voting for candidate");
+  });
+},
 
 };
 
