@@ -25,7 +25,9 @@ window.App = {
         candidatesRow.find(".getVotesForCandidate").attr('id', "votes"+data[i].id);
         candidatesRow.find(".voteCount").attr('id', "voteCount"+data[i].id);
         candidatesRow.find(".getVotesForCandidate").attr('data-candidateId', data[i].id);
-        candidatesSection.append(candidatesRow.html());
+        if(i<data.length-1) {
+          candidatesSection.append(candidatesRow.html());
+        }
       }
     });
 
@@ -77,17 +79,17 @@ voteForCandidate: function(id) {
   });
 
 },
-  getVotesForCandidateId: function(element) {
-    var id = $(element).data('candidateid');
-    VotersArtifact.deployed().then(function(instance) {
-      var votersInstance = instance;
-      return votersInstance.getVotesForCandidate(id);
-    }).then(function(result) {
-      $("#voteCount"+id).text(result.c[0]);
-    }).catch(function(error) {
-      console.log("error voting for candidate");
-    });
-  },
+getVotesForCandidateId: function(element) {
+  var id = $(element).data('candidateid');
+  VotersArtifact.deployed().then(function(instance) {
+    var votersInstance = instance;
+    return votersInstance.getVotesForCandidate(id);
+  }).then(function(result) {
+    $("#voteCount"+id).text(result.c[0]);
+  }).catch(function(error) {
+    console.log("error voting for candidate");
+  });
+},
 
 totalVotesCast: function() {
   VotersArtifact.deployed().then(function(instance) {
