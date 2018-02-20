@@ -5,28 +5,30 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="stylesheets/app.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
-  <h1>CastAVote</h1>
-  <h2>A dummy voting app</h2>
-  <input type="text" name="addCandidate" id="add" placeholder="Add a candidate">
-  <button id="addCandidate" onclick="App.addCandidate()"> Add a new candidate </button>
-  <br>
+  <div class="container-fluid">
+    <h1 class="centered">CastAVote</h1>
+    <h2 class="centered">A dummy voting app</h2>
 
-  <div id="candidates">
-    <div id="candidate_row">
-      <div class="name"></div>
-      <div class="id"></div>
-      <button id="candidateId" class="voteForCandidate" onclick="App.voteForCandidate(this.id)">Vote</button> 
-      <button id="countOfVotes" class="getVotesForCandidate" onclick="App.getVotesForCandidateId(this)">Get number of votes for candidate</button>
-      <div class="voteCount"></div>
+    <div id="candidates">
+      <div id="candidate_row">
+        <h4><span class="name"></span></h4>
+        Candidate Id: <span class="id"></span>
+        <div>
+          <button id="candidateId" class="voteForCandidate btn btn-success" onclick="App.voteForCandidate(this.id)">Vote</button> 
+          <button id="countOfVotes" class="getVotesForCandidate btn btn-info" onclick="App.getVotesForCandidateId(this)">Get number of votes for candidate</button>
+          <div class="voteCount"></div>
+        </div>
+      </div>
     </div>
-  </div>
-  <table class="table table-responsive cadidateVotes">
+    <table class="table table-responsive cadidateVotes">
 
-  </table> 
-  <strong>Total Votes Cast till now</strong><div id="totalVotes"></div>
+    </table> 
+    <h2>Total Votes Cast till now: <span id="totalVotes"></span></h2>
+  </div>
 </body>
 </html>
