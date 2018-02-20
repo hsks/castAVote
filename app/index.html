@@ -4,7 +4,7 @@
   <title>CastAVote | Bringing democracy a step closer to you!</title>
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
   <script src="./app.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
@@ -19,9 +19,14 @@
     <div id="candidate_row">
       <div class="name"></div>
       <div class="id"></div>
-      <button id="candidateId" onclick="App.voteForCandidate()">Vote</button>
+      <button id="candidateId" class="voteForCandidate" onclick="App.voteForCandidate(this.id)">Vote</button> 
+      <button id="countOfVotes" class="getVotesForCandidate" onclick="App.getVotesForCandidateId(this)">Get number of votes for candidate</button>
+      <div class="voteCount"></div>
     </div>
   </div>
+  <table class="table table-responsive cadidateVotes">
+
+  </table> 
   <strong>Total Votes Cast till now</strong><div id="totalVotes"></div>
 </body>
 </html>

@@ -21,7 +21,10 @@ window.App = {
       for (var i = 0; i < data.length; i++) {
         candidatesRow.find('.name').text(data[i].name);
         candidatesRow.find('.id').text(data[i].id);
-        candidatesRow.find('#candidateId').attr('id', data[i].id);
+        candidatesRow.find('.voteForCandidate').attr('id', data[i].id);
+        candidatesRow.find(".getVotesForCandidate").attr('id', "votes"+data[i].id);
+        candidatesRow.find(".voteCount").attr('id', "voteCount"+data[i].id);
+        candidatesRow.find(".getVotesForCandidate").attr('data-candidateId', data[i].id);
         candidatesSection.append(candidatesRow.html());
       }
     });
@@ -52,7 +55,8 @@ web3 = new Web3(App.web3Provider);
 App.fetchAccount();
 },
 
-voteForCandidate: function() {
+voteForCandidate: function(id) {
+  var self=this;
   web3.eth.getAccounts(function(error, accounts) {
     if(error) {
       console.log(error);
@@ -62,8 +66,9 @@ voteForCandidate: function() {
 
     VotersArtifact.deployed().then(function(instance) {
       var votersInstance = instance;
-      return votersInstance.voteForCandidate(1, {from: account});
+      return votersInstance.voteForCandidate(id, {from: account});
     }).then(function(result) {
+      self.totalVotesCast();
       console.log("voted for candidate");
     }).catch(function(error) {
       console.log("error voting for candidate");
@@ -72,6 +77,17 @@ voteForCandidate: function() {
   });
 
 },
+  getVotesForCandidateId: function(element) {
+    var id = $(element).data('candidateid');
+    VotersArtifact.deployed().then(function(instance) {
+      var votersInstance = instance;
+      return votersInstance.getVotesForCandidate(id);
+    }).then(function(result) {
+      $("#voteCount"+id).text(result.c[0]);
+    }).catch(function(error) {
+      console.log("error voting for candidate");
+    });
+  },
 
 totalVotesCast: function() {
   VotersArtifact.deployed().then(function(instance) {
@@ -82,7 +98,7 @@ totalVotesCast: function() {
   }).catch(function(error) {
     console.log("error voting for candidate");
   });
-},
+}
 
 };
 

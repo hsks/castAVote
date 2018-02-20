@@ -31,7 +31,7 @@ contract Voter {
 		return 1;
 	}
 	
-	function getVotesForCandidate(uint id) returns(uint) {
+	function getVotesForCandidate(uint id) constant returns(uint) {
 	    return votesVsCandidate[id];
 	}
 
