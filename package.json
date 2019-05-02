@@ -38,6 +38,6 @@
     "macaddress": ">=0.2.9"
   },
   "dependencies": {
-    "jquery": "^3.3.1"
+    "jquery": ">=3.4.0"
   }
 }
