@@ -37,7 +37,8 @@
     "macaddress": ">=0.2.9",
     "js-yaml": ">=3.13.1",
     "clean-css": ">=4.1.11",
-    "braces": ">=2.3.1"
+    "braces": ">=2.3.1",
+    "querystringify": ">=2.0.0"
   },
   "dependencies": {
     "jquery": ">=3.4.0"
